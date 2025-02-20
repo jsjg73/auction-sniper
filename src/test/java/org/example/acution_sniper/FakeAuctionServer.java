@@ -19,4 +19,8 @@ public class FakeAuctionServer {
 
     public void stop() {
     }
+
+    public String getItemId() {
+        return null;
+    }
 }
