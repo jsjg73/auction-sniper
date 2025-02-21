@@ -2,10 +2,11 @@ package org.example.acution_sniper;
 
 import org.example.Main;
 
+import static org.example.MainWindow.STATUS_JOINING;
+
 public class ApplicationRunner {
-    public static final String XMPP_HOSTNAME = "";
-    public static final String STATUS_JOINING = "";
-    public static final String STATUS_LOST = "";
+    public static final String XMPP_HOSTNAME = "localhost";
+    public static final String STATUS_LOST = "Lost";
     public static final String SNIPER_ID = "sniper";
     public static final String SNIPER_PASSWORD = "sniper";
     private AuctionSniperDriver driver;
