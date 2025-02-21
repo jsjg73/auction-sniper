@@ -13,7 +13,7 @@ dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
-    testImplementation 'jivesoftware:smack:3.1.0'
+    implementation 'jivesoftware:smack:3.1.0'
 
     testImplementation files('libs/tools.jar')
     testImplementation files('libs/hamcrest-all-SNAPSHOT.jar')
