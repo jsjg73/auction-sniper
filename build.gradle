@@ -13,7 +13,19 @@ dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
-    implementation 'jivesoftware:smack:3.1.0'
+    testImplementation 'jivesoftware:smack:3.1.0'
+
+    testImplementation files('libs/tools.jar')
+    testImplementation files('libs/hamcrest-all-SNAPSHOT.jar')
+    testImplementation files('libs/windowlicker-core-DEV.jar')
+    testImplementation files('libs/windowlicker-core-DEV-src.jar')
+    testImplementation files('libs/windowlicker-core-tests-DEV.jar')
+    testImplementation files('libs/windowlicker-swing-DEV.jar')
+    testImplementation files('libs/windowlicker-swing-DEV-src.jar')
+    testImplementation files('libs/windowlicker-swing-tests-DEV.jar')
+    testImplementation files('libs/windowlicker-web-DEV.jar')
+    testImplementation files('libs/windowlicker-web-DEV-src.jar')
+    testImplementation files('libs/windowlicker-web-tests-DEV.jar')
 }
 
 test {
