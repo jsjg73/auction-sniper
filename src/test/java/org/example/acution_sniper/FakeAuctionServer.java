@@ -52,4 +52,11 @@ public class FakeAuctionServer {
     public String getItemId() {
         return itemId;
     }
+
+    public void reportPrice(int price, int increment, String bidder) {
+
+    }
+
+    public void hasReceivedBid(int bid, String sniperId) {
+    }
 }
