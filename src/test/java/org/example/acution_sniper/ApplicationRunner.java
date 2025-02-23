@@ -1,6 +1,7 @@
 package org.example.acution_sniper;
 
 import org.example.Main;
+import org.example.MainWindow;
 
 import static org.example.MainWindow.STATUS_JOINING;
 
@@ -40,5 +41,6 @@ public class ApplicationRunner {
     }
 
     public void hasShownSniperIsBidding() {
+        driver.showsSniperStatus(MainWindow.STATUS_BIDDING);
     }
 }
