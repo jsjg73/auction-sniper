@@ -29,16 +29,17 @@ public class Main implements AuctionEventListener {
 
     private MainWindow ui;
 
-    @SuppressWarnings("unused") private Chat notToBeGCd;
+    @SuppressWarnings("unused")
+    private Chat notToBeGCd;
 
     public Main() throws Exception {
-       startUserInterface();
+        startUserInterface();
     }
 
     public static void main(String... args) throws Exception {
         Main main = new Main();
         main.joinAuction(
-            connect(args[ARG_HOSTNAME], args[ARG_USERNAME], args[ARG_PASSWORD]),
+                connect(args[ARG_HOSTNAME], args[ARG_USERNAME], args[ARG_PASSWORD]),
                 args[ARG_ITEM_ID]);
     }
 
@@ -57,12 +58,7 @@ public class Main implements AuctionEventListener {
 //                new MessageListener() {
 //                    @Override
 //                    public void processMessage(Chat chat, Message message) {
-//                        SwingUtilities.invokeLater(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                ui.showStatus(MainWindow.STATUS_LOST);
-//                            }
-//                        });
+//
 //                    }
 //                }
         );
@@ -94,6 +90,11 @@ public class Main implements AuctionEventListener {
 
     @Override
     public void auctionClosed() {
-
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                ui.showStatus(MainWindow.STATUS_LOST);
+            }
+        });
     }
 }
