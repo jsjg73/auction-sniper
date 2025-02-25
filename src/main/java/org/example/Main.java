@@ -1,5 +1,7 @@
 package org.example;
 
+import auctionsniper.AuctionEventListener;
+import auctionsniper.AuctionMessageTranslator;
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.MessageListener;
 import org.jivesoftware.smack.XMPPConnection;
@@ -10,7 +12,7 @@ import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class Main {
+public class Main implements AuctionEventListener {
     public static final String BID_COMMAND_FORMAT = "SOLVersion: 1.1; Command: BID; Price: %d;";
     public static String MAIN_WINDOW_NAME = "Auction Sniper Main";
     public static String SNIPER_STATUS_NAME = "sniper status";
@@ -51,17 +53,18 @@ public class Main {
         disconnectWhenUICloses(connection);
         final Chat chat = connection.getChatManager().createChat(
                 auctionId(itemId, connection),
-                new MessageListener() {
-                    @Override
-                    public void processMessage(Chat chat, Message message) {
-                        SwingUtilities.invokeLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                ui.showStatus(MainWindow.STATUS_LOST);
-                            }
-                        });
-                    }
-                }
+                new AuctionMessageTranslator(this)
+//                new MessageListener() {
+//                    @Override
+//                    public void processMessage(Chat chat, Message message) {
+//                        SwingUtilities.invokeLater(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                ui.showStatus(MainWindow.STATUS_LOST);
+//                            }
+//                        });
+//                    }
+//                }
         );
         this.notToBeGCd = chat;
         chat.sendMessage(JOIN_COMMAND_FORMAT);
@@ -87,5 +90,10 @@ public class Main {
 
     private static String auctionId(String itemId, XMPPConnection connection) {
         return String.format(AUCTION_ID_FORMAT, itemId, connection.getServiceName());
+    }
+
+    @Override
+    public void auctionClosed() {
+
     }
 }
