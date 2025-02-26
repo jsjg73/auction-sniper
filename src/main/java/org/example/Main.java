@@ -2,6 +2,8 @@ package org.example;
 
 import auctionsniper.AuctionEventListener;
 import auctionsniper.AuctionMessageTranslator;
+import auctionsniper.AuctionSniper;
+import auctionsniper.SniperListener;
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.MessageListener;
 import org.jivesoftware.smack.XMPPConnection;
@@ -12,7 +14,7 @@ import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class Main implements AuctionEventListener {
+public class Main implements SniperListener {
     public static final String BID_COMMAND_FORMAT = "SOLVersion: 1.1; Command: BID; Price: %d;";
     public static String MAIN_WINDOW_NAME = "Auction Sniper Main";
     public static String SNIPER_STATUS_NAME = "sniper status";
@@ -53,14 +55,8 @@ public class Main implements AuctionEventListener {
     private void joinAuction(XMPPConnection connection, String itemId) throws XMPPException {
         disconnectWhenUICloses(connection);
         final Chat chat = connection.getChatManager().createChat(
-                auctionId(itemId, connection),
-                new AuctionMessageTranslator(this)
-//                new MessageListener() {
-//                    @Override
-//                    public void processMessage(Chat chat, Message message) {
-//
-//                    }
-//                }
+            auctionId(itemId, connection),
+            new AuctionMessageTranslator(new AuctionSniper(this))
         );
         this.notToBeGCd = chat;
         chat.sendMessage(JOIN_COMMAND_FORMAT);
@@ -89,17 +85,13 @@ public class Main implements AuctionEventListener {
     }
 
     @Override
-    public void auctionClosed() {
+    public void sniperLost() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
                 ui.showStatus(MainWindow.STATUS_LOST);
             }
         });
-    }
-
-    @Override
-    public void currentPrice(int price, int increment) {
 
     }
 }
