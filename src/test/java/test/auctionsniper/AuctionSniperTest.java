@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 public class AuctionSniperTest {
     private final Mockery context = new Mockery();
+    private final Auction auction = context.mock(Auction.class);
     private final SniperListener sniperListener =
             context.mock(SniperListener.class);
 
