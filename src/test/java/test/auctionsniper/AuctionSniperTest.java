@@ -1,5 +1,6 @@
 package test.auctionsniper;
 
+import auctionsniper.Auction;
 import auctionsniper.AuctionSniper;
 import auctionsniper.SniperListener;
 import org.jmock.Expectations;
@@ -12,7 +13,7 @@ public class AuctionSniperTest {
     private final SniperListener sniperListener =
             context.mock(SniperListener.class);
 
-    private final AuctionSniper sniper = new AuctionSniper(sniperListener);
+    private final AuctionSniper sniper = new AuctionSniper(auction, sniperListener);
 
     @Test
     void reportsLostWhenAuctionCloses() {
@@ -21,5 +22,17 @@ public class AuctionSniperTest {
         }});
 
         sniper.auctionClosed();
+    }
+
+    @Test
+    void bidsHigherAndReportsBiddingWhenNewPriceArrives() {
+        final int price = 1001;
+        final int increment = 25;
+        context.checking(new Expectations() {{
+            one(auction).bid(1026);
+            atLeast(1).of(sniperListener).sniperBidding();
+        }});
+
+        sniper.currentPrice(price, increment);
     }
 }

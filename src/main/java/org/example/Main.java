@@ -94,4 +94,11 @@ public class Main implements SniperListener {
         });
 
     }
+
+    @Override
+    public void sniperBidding() {
+
+    }
+
+
 }

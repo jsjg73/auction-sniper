@@ -6,6 +6,11 @@ public class AuctionSniper implements AuctionEventListener {
     public AuctionSniper (SniperListener sniperListener) {
         this.sniperListener = sniperListener;
     }
+
+    public AuctionSniper(Auction auction, SniperListener sniperListener) {
+        this(sniperListener);
+    }
+
     @Override
     public void auctionClosed() {
         sniperListener.sniperLost();
