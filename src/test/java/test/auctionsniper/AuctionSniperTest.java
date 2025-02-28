@@ -6,7 +6,10 @@ import auctionsniper.SniperListener;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import test.JMockFieldExtension;
 
+@ExtendWith(JMockFieldExtension.class)
 public class AuctionSniperTest {
     private final Mockery context = new Mockery();
     private final Auction auction = context.mock(Auction.class);

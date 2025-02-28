@@ -7,7 +7,10 @@ import org.jivesoftware.smack.packet.Message;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import test.JMockFieldExtension;
 
+@ExtendWith(JMockFieldExtension.class)
 public class AuctionMessageTranslatorTest {
     public static final Chat UNUSED_CHAT = null;
 
