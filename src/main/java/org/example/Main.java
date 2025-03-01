@@ -56,21 +56,12 @@ public class Main implements SniperListener {
             null
         );
 
-        Auction auction = new Auction() {
-            @Override
-            public void bid(int amount) {
-                try {
-                    chat.sendMessage(String.format(BID_COMMAND_FORMAT, amount));
-                } catch (XMPPException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
+        Auction auction = new XMMPAuction(chat);
         chat.addMessageListener(
             new AuctionMessageTranslator(new AuctionSniper(auction, this))
         );
         this.notToBeGCd = chat;
-        chat.sendMessage(JOIN_COMMAND_FORMAT);
+        auction.join();
     }
 
     private void disconnectWhenUICloses(XMPPConnection connection) {
@@ -114,5 +105,31 @@ public class Main implements SniperListener {
                 ui.showStatus(MainWindow.STATUS_BIDDING);
             }
         });
+    }
+
+    private static class XMMPAuction implements Auction {
+        private final Chat chat;
+
+        public XMMPAuction(Chat chat) {
+            this.chat = chat;
+        }
+
+        @Override
+        public void bid(int amount) {
+            sendMessage(String.format(BID_COMMAND_FORMAT, amount));
+        }
+
+        @Override
+        public void join() {
+            sendMessage(JOIN_COMMAND_FORMAT);
+        }
+
+        private void sendMessage(final String message) {
+            try {
+                chat.sendMessage(message);
+            } catch (XMPPException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
