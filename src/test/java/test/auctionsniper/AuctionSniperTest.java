@@ -32,6 +32,8 @@ public class AuctionSniperTest {
         final int price = 1001;
         final int increment = 25;
         context.checking(new Expectations() {{
+            // aution에는 one을 사용하고, sniperListener에는 atLeast를 사용하는것.
+            // 이는 리스너가 auction에 비해 좀 더 너그러운 협력 객체라는 의도를 표현한다.
             one(auction).bid(1026);
             atLeast(1).of(sniperListener).sniperBidding();
         }});

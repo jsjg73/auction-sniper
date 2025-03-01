@@ -2,13 +2,11 @@ package auctionsniper;
 
 public class AuctionSniper implements AuctionEventListener {
     private final SniperListener sniperListener;
-
-    public AuctionSniper (SniperListener sniperListener) {
-        this.sniperListener = sniperListener;
-    }
+    private final Auction auction;
 
     public AuctionSniper(Auction auction, SniperListener sniperListener) {
-        this(sniperListener);
+        this.auction =auction;
+        this.sniperListener = sniperListener;
     }
 
     @Override
@@ -18,6 +16,7 @@ public class AuctionSniper implements AuctionEventListener {
 
     @Override
     public void currentPrice(int price, int increment) {
-
+        auction.bid(price + increment);
+        sniperListener.sniperBidding();
     }
 }
