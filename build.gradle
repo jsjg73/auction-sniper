@@ -13,14 +13,17 @@ dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
-    // https://mvnrepository.com/artifact/org.jmock/jmock
-    testImplementation 'org.jmock:jmock:2.12.0'
+    // https://mvnrepository.com/artifact/org.jmock/jmock-junit5
+    testImplementation 'org.jmock:jmock-junit5:2.13.1'
+
+    // https://mvnrepository.com/artifact/org.hamcrest/hamcrest
+    testImplementation 'org.hamcrest:hamcrest:2.2'
 
 
     implementation 'jivesoftware:smack:3.1.0'
 
     testImplementation files('libs/tools.jar')
-    testImplementation files('libs/hamcrest-all-SNAPSHOT.jar')
+//    testImplementation files('libs/hamcrest-all-SNAPSHOT.jar')
     testImplementation files('libs/windowlicker-core-DEV.jar')
     testImplementation files('libs/windowlicker-core-DEV-src.jar')
     testImplementation files('libs/windowlicker-core-tests-DEV.jar')
