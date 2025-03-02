@@ -2,16 +2,14 @@ package org.example;
 
 import auctionsniper.*;
 import org.jivesoftware.smack.Chat;
-import org.jivesoftware.smack.MessageListener;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
-import org.jivesoftware.smack.packet.Message;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class Main implements SniperListener {
+public class Main {
     public static final String BID_COMMAND_FORMAT = "SOLVersion: 1.1; Command: BID; Price: %d;";
     public static String MAIN_WINDOW_NAME = "Auction Sniper Main";
     public static String SNIPER_STATUS_NAME = "sniper status";
@@ -58,7 +56,7 @@ public class Main implements SniperListener {
 
         Auction auction = new XMMPAuction(chat);
         chat.addMessageListener(
-            new AuctionMessageTranslator(new AuctionSniper(auction, this))
+            new AuctionMessageTranslator(new AuctionSniper(auction, new SniperStateDisplayer()))
         );
         this.notToBeGCd = chat;
         auction.join();
@@ -86,25 +84,30 @@ public class Main implements SniperListener {
         return String.format(AUCTION_ID_FORMAT, itemId, connection.getServiceName());
     }
 
-    @Override
-    public void sniperLost() {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                ui.showStatus(MainWindow.STATUS_LOST);
-            }
-        });
+    public class SniperStateDisplayer implements SniperListener {
+        @Override
+        public void sniperLost() {
+            showStatus(MainWindow.STATUS_LOST);
+        }
 
-    }
+        @Override
+        public void sniperBidding() {
+            showStatus(MainWindow.STATUS_BIDDING);
+        }
 
-    @Override
-    public void sniperBidding() {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                ui.showStatus(MainWindow.STATUS_BIDDING);
-            }
-        });
+        @Override
+        public void sniperWinning() {
+            showStatus(MainWindow.STATUS_WINNING);
+        }
+
+        private void showStatus(final String status) {
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    ui.showStatus(status);
+                }
+            });
+        }
     }
 
     private static class XMMPAuction implements Auction {
