@@ -6,10 +6,12 @@ import auctionsniper.AuctionSniper;
 import auctionsniper.SniperListener;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
+import org.jmock.States;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import test.JMockFieldExtension;
 
+import static auctionsniper.AuctionEventListener.PriceSource.FromOtherBidder;
 import static auctionsniper.AuctionEventListener.PriceSource.FromSniper;
 
 @ExtendWith(JMockFieldExtension.class)
@@ -41,7 +43,7 @@ public class AuctionSniperTest {
             atLeast(1).of(sniperListener).sniperBidding();
         }});
 
-        sniper.currentPrice(price, increment, null);
+        sniper.currentPrice(price, increment, FromOtherBidder);
     }
 
     @Test
@@ -51,5 +53,30 @@ public class AuctionSniperTest {
         }});
 
         sniper.currentPrice(123, 45, FromSniper);
+    }
+
+    @Test
+    void reportsLostIfAuctionClosesImmediately() {
+        context.checking(new Expectations() {{
+            atLeast(1).of(sniperListener).sniperLost();
+        }});
+
+        sniper.auctionClosed();
+    }
+
+    private final States sniperState = context.states("sniper");
+
+    @Test
+    void reportsLostIfAuctionClosesWhenBidding() {
+        context.checking(new Expectations() {{
+            ignoring(auction);
+            allowing(sniperListener).sniperBidding();
+                then(sniperState.is("bidding"));
+            atLeast(1).of(sniperListener).sniperLost();
+                when(sniperState.is("bidding"));
+        }});
+
+        sniper.currentPrice(123, 45, FromOtherBidder);
+        sniper.auctionClosed();
     }
 }
