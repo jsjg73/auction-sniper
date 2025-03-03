@@ -57,7 +57,7 @@ public class Main {
         Auction auction = new XMMPAuction(chat);
         chat.addMessageListener(
             new AuctionMessageTranslator(connection.getUser(),
-                    new AuctionSniper(auction, new SniperStateDisplayer()))
+                    new AuctionSniper(auction, new SniperStateDisplayer(), itemId))
         );
         this.notToBeGCd = chat;
         auction.join();
@@ -92,7 +92,7 @@ public class Main {
         }
 
         @Override
-        public void sniperBidding() {
+        public void sniperBidding(SniperState sniperState) {
             showStatus(MainWindow.STATUS_BIDDING);
         }
 

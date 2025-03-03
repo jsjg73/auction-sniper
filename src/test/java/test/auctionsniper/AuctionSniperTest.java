@@ -1,9 +1,6 @@
 package test.auctionsniper;
 
-import auctionsniper.Auction;
-import auctionsniper.AuctionEventListener;
-import auctionsniper.AuctionSniper;
-import auctionsniper.SniperListener;
+import auctionsniper.*;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.States;
@@ -16,12 +13,13 @@ import static auctionsniper.AuctionEventListener.PriceSource.FromSniper;
 
 @ExtendWith(JMockFieldExtension.class)
 public class AuctionSniperTest {
+    private static final String ITEM_ID = "item-id";
     private final Mockery context = new Mockery();
     private final Auction auction = context.mock(Auction.class);
     private final SniperListener sniperListener =
             context.mock(SniperListener.class);
 
-    private final AuctionSniper sniper = new AuctionSniper(auction, sniperListener);
+    private final AuctionSniper sniper = new AuctionSniper(auction, sniperListener, ITEM_ID);
 
     @Test
     void reportsLostWhenAuctionCloses() {
@@ -36,11 +34,12 @@ public class AuctionSniperTest {
     void bidsHigherAndReportsBiddingWhenNewPriceArrives() {
         final int price = 1001;
         final int increment = 25;
+        final int bid = price + increment;
         context.checking(new Expectations() {{
             // aution에는 one을 사용하고, sniperListener에는 atLeast를 사용하는것.
             // 이는 리스너가 auction에 비해 좀 더 너그러운 협력 객체라는 의도를 표현한다.
-            one(auction).bid(1026);
-            atLeast(1).of(sniperListener).sniperBidding();
+            one(auction).bid(bid);
+            atLeast(1).of(sniperListener).sniperBidding(new SniperState(ITEM_ID, price, bid));
         }});
 
         sniper.currentPrice(price, increment, FromOtherBidder);
@@ -70,7 +69,7 @@ public class AuctionSniperTest {
     void reportsLostIfAuctionClosesWhenBidding() {
         context.checking(new Expectations() {{
             ignoring(auction);
-            allowing(sniperListener).sniperBidding();
+            allowing(sniperListener).sniperBidding(with(any(SniperState.class)));
                 then(sniperState.is("bidding"));
             atLeast(1).of(sniperListener).sniperLost();
                 when(sniperState.is("bidding"));
