@@ -1,13 +1,19 @@
 package org.example;
 
 import auctionsniper.SniperSnapshot;
+import auctionsniper.SniperState;
 
 import javax.swing.table.AbstractTableModel;
 
 public class SnipersTableModel extends AbstractTableModel {
-    private final static SniperSnapshot STARTING_UP = new SniperSnapshot("", 0, 0);
+    private final static SniperSnapshot STARTING_UP = new SniperSnapshot("", 0, 0, SniperState.BIDDING);
+    private static String[] STATUS_TEXT = {
+            MainWindow.STATUS_JOINING,
+            MainWindow.STATUS_BIDDING,
+            MainWindow.STATUS_WINNING
+    };
     private String statusText = MainWindow.STATUS_JOINING;
-    private SniperSnapshot sniperSnapshot = STARTING_UP;
+    private SniperSnapshot snapshot = STARTING_UP;
 
     @Override
     public int getRowCount() {
@@ -23,11 +29,11 @@ public class SnipersTableModel extends AbstractTableModel {
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch (Column.at(columnIndex)) {
             case ITEM_IDENTIFIER:
-                return sniperSnapshot.itemId;
+                return snapshot.itemId;
             case LAST_PRICE:
-                return sniperSnapshot.lastPrice;
+                return snapshot.lastPrice;
             case LAST_BID:
-                return sniperSnapshot.lastBid;
+                return snapshot.lastBid;
             case SNIPER_STATE:
                 return statusText;
             default:
@@ -40,9 +46,9 @@ public class SnipersTableModel extends AbstractTableModel {
         fireTableRowsUpdated(0, 0);
     }
 
-    public void sniperStatusChanged(SniperSnapshot newSniperSnapshot, String newStatusText) {
-        sniperSnapshot = newSniperSnapshot;
-        statusText = newStatusText;
+    public void sniperStatusChanged(SniperSnapshot newSnapshot) {
+        this.snapshot = newSnapshot;
+        statusText = STATUS_TEXT[newSnapshot.state.ordinal()];
         fireTableRowsUpdated(0, 0);
     }
 }
