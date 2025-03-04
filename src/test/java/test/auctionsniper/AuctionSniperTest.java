@@ -39,7 +39,7 @@ public class AuctionSniperTest {
             // aution에는 one을 사용하고, sniperListener에는 atLeast를 사용하는것.
             // 이는 리스너가 auction에 비해 좀 더 너그러운 협력 객체라는 의도를 표현한다.
             one(auction).bid(bid);
-            atLeast(1).of(sniperListener).sniperBidding(new SniperState(ITEM_ID, price, bid));
+            atLeast(1).of(sniperListener).sniperBidding(new SniperSnapshot(ITEM_ID, price, bid));
         }});
 
         sniper.currentPrice(price, increment, FromOtherBidder);
@@ -69,7 +69,7 @@ public class AuctionSniperTest {
     void reportsLostIfAuctionClosesWhenBidding() {
         context.checking(new Expectations() {{
             ignoring(auction);
-            allowing(sniperListener).sniperBidding(with(any(SniperState.class)));
+            allowing(sniperListener).sniperBidding(with(any(SniperSnapshot.class)));
                 then(sniperState.is("bidding"));
             atLeast(1).of(sniperListener).sniperLost();
                 when(sniperState.is("bidding"));
