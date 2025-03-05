@@ -1,11 +1,12 @@
 package org.example;
 
 import auctionsniper.SniperSnapshot;
+import auctionsniper.SniperState;
 
 import javax.swing.table.AbstractTableModel;
 
 public class SnipersTableModel extends AbstractTableModel {
-    private final static SniperSnapshot STARTING_UP = new SniperSnapshot("", 0, 0);
+    private final static SniperSnapshot STARTING_UP = new SniperSnapshot("", 0, 0, SniperState.BIDDING);
     private String statusText = MainWindow.STATUS_JOINING;
     private SniperSnapshot sniperSnapshot = STARTING_UP;
 

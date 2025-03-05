@@ -1,6 +1,7 @@
 package test.ui;
 
 import auctionsniper.SniperSnapshot;
+import auctionsniper.SniperState;
 import org.example.Column;
 import org.example.MainWindow;
 import org.example.SnipersTableModel;
@@ -43,7 +44,7 @@ public class SnipersTableModelTest {
         }});
 
         model.sniperStatusChanged(
-                new SniperSnapshot("item id", 555, 666),
+                new SniperSnapshot("item id", 555, 666, SniperState.BIDDING),
                 MainWindow.STATUS_BIDDING
         );
         assertColumnEquals(Column.ITEM_IDENTIFIER, "item id");
