@@ -92,7 +92,7 @@ public class Main {
         }
 
         @Override
-        public void sniperBidding(SniperSnapshot state) {
+        public void sniperStateChanged(SniperSnapshot state) {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
