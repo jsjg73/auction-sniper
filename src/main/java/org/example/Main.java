@@ -11,7 +11,6 @@ import java.awt.event.WindowEvent;
 
 public class Main {
     public static final String BID_COMMAND_FORMAT = "SOLVersion: 1.1; Command: BID; Price: %d;";
-    public static String MAIN_WINDOW_NAME = "Auction Sniper Main";
     public static String SNIPER_STATUS_NAME = "sniper status";
     public static final String ITEM_ID_AS_LOGIN = "auction-%s";
     public static final String AUCTION_RESOURCE = "Auction";
