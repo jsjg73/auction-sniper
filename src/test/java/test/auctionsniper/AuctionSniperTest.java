@@ -12,6 +12,8 @@ import test.JMockFieldExtension;
 
 import static auctionsniper.AuctionEventListener.PriceSource.FromOtherBidder;
 import static auctionsniper.AuctionEventListener.PriceSource.FromSniper;
+import static auctionsniper.SniperState.BIDDING;
+import static auctionsniper.SniperState.WINNING;
 import static org.hamcrest.Matchers.equalTo;
 
 @ExtendWith(JMockFieldExtension.class)
@@ -51,10 +53,18 @@ public class AuctionSniperTest {
     @Test
     void reportsIsWinningWhenCurrentPriceComesFromSniper() {
         context.checking(new Expectations() {{
-            atLeast(1).of(sniperListener).sniperWinning();
+            allowing(auction);
+            allowing(sniperListener).sniperStateChanged(with(aSniperThatIs(BIDDING)));
+            then(sniperState.is("bidding"));
+
+            atLeast(1).of(sniperListener).sniperStateChanged(
+                new SniperSnapshot(ITEM_ID, 135, 135, WINNING)
+            );
+            when(sniperState.is("bidding"));
         }});
 
-        sniper.currentPrice(123, 45, FromSniper);
+        sniper.currentPrice(123, 12, FromOtherBidder);
+        sniper.currentPrice(135, 45, FromSniper);
     }
 
     @Test
