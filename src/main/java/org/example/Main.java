@@ -84,6 +84,7 @@ public class Main {
         return String.format(AUCTION_ID_FORMAT, itemId, connection.getServiceName());
     }
 
+
     public class SniperStateDisplayer implements SniperListener {
         @Override
         public void sniperLost() {
@@ -98,11 +99,6 @@ public class Main {
                     ui.sniperStatusChanged(state);
                 }
             });
-        }
-
-        @Override
-        public void sniperWinning() {
-            showStatus(MainWindow.STATUS_WINNING);
         }
 
         @Override
