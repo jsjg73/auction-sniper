@@ -12,8 +12,7 @@ import test.JMockFieldExtension;
 
 import static auctionsniper.AuctionEventListener.PriceSource.FromOtherBidder;
 import static auctionsniper.AuctionEventListener.PriceSource.FromSniper;
-import static auctionsniper.SniperState.BIDDING;
-import static auctionsniper.SniperState.WINNING;
+import static auctionsniper.SniperState.*;
 import static org.hamcrest.Matchers.equalTo;
 
 @ExtendWith(JMockFieldExtension.class)
@@ -25,15 +24,6 @@ public class AuctionSniperTest {
             context.mock(SniperListener.class);
 
     private final AuctionSniper sniper = new AuctionSniper(auction, sniperListener, ITEM_ID);
-
-    @Test
-    void reportsLostWhenAuctionCloses() {
-        context.checking(new Expectations() {{
-            one(sniperListener).sniperLost();
-        }});
-
-        sniper.auctionClosed();
-    }
 
     @Test
     void bidsHigherAndReportsBiddingWhenNewPriceArrives() {
@@ -70,7 +60,7 @@ public class AuctionSniperTest {
     @Test
     void reportsLostIfAuctionClosesImmediately() {
         context.checking(new Expectations() {{
-            atLeast(1).of(sniperListener).sniperLost();
+            atLeast(1).of(sniperListener).sniperStateChanged(with(aSniperThatIs(LOST)));
         }});
 
         sniper.auctionClosed();
@@ -84,7 +74,7 @@ public class AuctionSniperTest {
             ignoring(auction);
             allowing(sniperListener).sniperStateChanged(with(aSniperThatIs(SniperState.BIDDING)));
                 then(sniperState.is("bidding"));
-            atLeast(1).of(sniperListener).sniperLost();
+            atLeast(1).of(sniperListener).sniperStateChanged(with(aSniperThatIs(LOST)));
                 when(sniperState.is("bidding"));
         }});
 
@@ -98,7 +88,7 @@ public class AuctionSniperTest {
             ignoring(auction);
             allowing(sniperListener).sniperStateChanged(with(aSniperThatIs(WINNING)));
                 then(sniperState.is("winning"));
-            atLeast(1).of(sniperListener).sniperWon();
+            atLeast(1).of(sniperListener).sniperStateChanged(with(aSniperThatIs(WON)));
                 when(sniperState.is("winning"));
         }});
 
