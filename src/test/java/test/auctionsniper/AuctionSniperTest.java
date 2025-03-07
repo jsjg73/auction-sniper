@@ -96,7 +96,7 @@ public class AuctionSniperTest {
     void reportsWonIfAuctionClosesWhenWinning() {
         context.checking(new Expectations() {{
             ignoring(auction);
-            allowing(sniperListener).sniperWinning();
+            allowing(sniperListener).sniperStateChanged(with(aSniperThatIs(WINNING)));
                 then(sniperState.is("winning"));
             atLeast(1).of(sniperListener).sniperWon();
                 when(sniperState.is("winning"));
