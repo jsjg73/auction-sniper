@@ -7,6 +7,7 @@ import org.example.SnipersTableModel;
 import org.hamcrest.Matcher;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -59,5 +60,12 @@ public class SnipersTableModelTest {
 
     private Matcher<TableModelEvent> aRowChangesEvent() {
         return samePropertyValuesAs(new TableModelEvent(model, 0));
+    }
+
+    @Test
+    void setsUpColumnHeadings() {
+        for (Column column : Column.values()) {
+            assertEquals(column.name, model.getColumnName(column.ordinal()));
+        }
     }
 }
