@@ -14,7 +14,7 @@ public class ApplicationRunner {
     private AuctionSniperDriver driver;
     private String itemId;
 
-    public void startBiddingIn(FakeAuctionServer auction) {
+    public void startBiddingIn(final FakeAuctionServer auction) {
         itemId = auction.getItemId();
         Thread thread = new Thread("Test Application") {
             public void run() {
@@ -29,6 +29,8 @@ public class ApplicationRunner {
         thread.setDaemon(true);
         thread.start();
         driver = new AuctionSniperDriver(1000);
+        driver.hasTitle(MainWindow.APPLICATION_TITLE);
+        driver.hasColumnTitles();
         driver.showsSniperStatus(SnipersTableModel.textFor(SniperState.JOINING));
     }
 
