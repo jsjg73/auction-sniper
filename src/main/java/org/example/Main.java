@@ -23,6 +23,7 @@ public class Main {
     private static final int ARG_PASSWORD = 2;
     private static final int ARG_ITEM_ID = 3;
 
+    private final SnipersTableModel snipers = new SnipersTableModel();
     private MainWindow ui;
 
     @SuppressWarnings("unused")
@@ -46,7 +47,7 @@ public class Main {
         return connection;
     }
 
-    private void joinAuction(XMPPConnection connection, String itemId) throws XMPPException {
+    private void joinAuction(XMPPConnection connection, String itemId) {
         disconnectWhenUICloses(connection);
         final Chat chat = connection.getChatManager().createChat(
             auctionId(itemId, connection),
@@ -56,7 +57,7 @@ public class Main {
         Auction auction = new XMMPAuction(chat);
         chat.addMessageListener(
             new AuctionMessageTranslator(connection.getUser(),
-                    new AuctionSniper(auction, new SniperStateDisplayer(), itemId))
+                    new AuctionSniper(auction, new SwingThreadSniperListener(snipers), itemId))
         );
         this.notToBeGCd = chat;
         auction.join();
@@ -75,7 +76,7 @@ public class Main {
         SwingUtilities.invokeAndWait(new Runnable() {
             @Override
             public void run() {
-                ui = new MainWindow();
+                ui = new MainWindow(snipers);
             }
         });
     }
@@ -85,13 +86,19 @@ public class Main {
     }
 
 
-    public class SniperStateDisplayer implements SniperListener {
+    public class SwingThreadSniperListener implements SniperListener {
+        private final SniperListener sniperListener;
+
+        public SwingThreadSniperListener (SniperListener sniperListener) {
+            this.sniperListener = sniperListener;
+        }
+
         @Override
-        public void sniperStateChanged(SniperSnapshot state) {
+        public void sniperStateChanged(final SniperSnapshot snapshot) {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    ui.sniperStatusChanged(state);
+                    sniperListener.sniperStateChanged(snapshot);
                 }
             });
         }

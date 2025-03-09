@@ -3,7 +3,6 @@ package test.ui;
 import auctionsniper.SniperSnapshot;
 import auctionsniper.SniperState;
 import org.example.Column;
-import org.example.MainWindow;
 import org.example.SnipersTableModel;
 import org.hamcrest.Matcher;
 import org.jmock.Expectations;
@@ -43,7 +42,7 @@ public class SnipersTableModelTest {
             one(listener).tableChanged(with(aRowChangesEvent()));
         }});
 
-        model.sniperStatusChanged(
+        model.sniperStateChanged(
                 new SniperSnapshot("item id", 555, 666, SniperState.BIDDING)
         );
         assertColumnEquals(Column.ITEM_IDENTIFIER, "item id");
