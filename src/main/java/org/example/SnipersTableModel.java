@@ -10,9 +10,10 @@ public class SnipersTableModel extends AbstractTableModel {
     private final static String[] STATUS_TEXT = {
         "Joining",
         "Bidding",
-        "Winning"
+        "Winning",
+            "Lost",
+            "Won"
     };
-    private String statusText = "Joining";
     private SniperSnapshot sniperSnapshot = STARTING_UP;
 
     @Override
@@ -35,7 +36,7 @@ public class SnipersTableModel extends AbstractTableModel {
             case LAST_BID:
                 return sniperSnapshot.lastBid;
             case SNIPER_STATE:
-                return statusText;
+                return textFor(sniperSnapshot.state);
             default:
                 throw new IllegalArgumentException("No column at " + columnIndex);
         }
@@ -43,7 +44,6 @@ public class SnipersTableModel extends AbstractTableModel {
 
     public void sniperStatusChanged(SniperSnapshot newSniperSnapshot) {
         sniperSnapshot = newSniperSnapshot;
-        statusText = STATUS_TEXT[newSniperSnapshot.state.ordinal()];
         fireTableRowsUpdated(0, 0);
     }
 

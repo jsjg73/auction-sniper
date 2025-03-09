@@ -8,7 +8,6 @@ import java.awt.*;
 
 public class MainWindow extends JFrame {
     public static String MAIN_WINDOW_NAME = "Auction Sniper Main";
-    public static final String STATUS_WINNING = "Winning";
     public static final String STATUS_WON = "Won";
     private static final String SNIPERS_TABLE_NAME = "sniper table";
     private final SnipersTableModel snipers = new SnipersTableModel();
