@@ -23,8 +23,8 @@ public enum Column {
     },
     SNIPER_STATE {
         @Override
-        public Object valueIn(SniperSnapshot snapshot) {
-            return snapshot.state;
+        public Object  valueIn(SniperSnapshot snapshot) {
+            return SnipersTableModel.textFor(snapshot.state);
         }
     };
 
