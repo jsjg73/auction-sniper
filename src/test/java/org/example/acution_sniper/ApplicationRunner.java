@@ -47,7 +47,7 @@ public class ApplicationRunner {
     }
 
     public void hasShownSniperIsWinning(int winningBid) {
-        driver.showsSniperStatus(itemId, winningBid, winningBid, MainWindow.STATUS_WINNING);
+        driver.showsSniperStatus(itemId, winningBid, winningBid, SnipersTableModel.textFor(SniperState.WINNING));
     }
 
     public void showSniperHasWonAuction(int lastBid) {
