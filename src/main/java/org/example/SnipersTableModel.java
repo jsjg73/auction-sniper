@@ -9,7 +9,7 @@ public class SnipersTableModel extends AbstractTableModel {
     private final static SniperSnapshot STARTING_UP = new SniperSnapshot("", 0, 0, SniperState.BIDDING);
     private final static String[] STATUS_TEXT = {
         "Joining",
-        MainWindow.STATUS_BIDDING,
+        "Bidding",
         MainWindow.STATUS_WINNING
     };
     private String statusText = "Joining";

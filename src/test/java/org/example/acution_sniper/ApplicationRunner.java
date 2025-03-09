@@ -43,7 +43,7 @@ public class ApplicationRunner {
     }
 
     public void hasShownSniperIsBidding(int lastPrice, int lastBid) {
-        driver.showsSniperStatus(itemId, lastPrice, lastBid, MainWindow.STATUS_BIDDING);
+        driver.showsSniperStatus(itemId, lastPrice, lastBid, SnipersTableModel.textFor(SniperState.BIDDING));
     }
 
     public void hasShownSniperIsWinning(int winningBid) {
