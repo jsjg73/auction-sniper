@@ -7,7 +7,7 @@ import auctionsniper.SniperState;
 import javax.swing.table.AbstractTableModel;
 
 public class SnipersTableModel extends AbstractTableModel implements SniperListener {
-    private final static SniperSnapshot STARTING_UP = new SniperSnapshot("", 0, 0, SniperState.BIDDING);
+    private final static SniperSnapshot STARTING_UP = new SniperSnapshot("", 0, 0, SniperState.JOINING);
     private final static String[] STATUS_TEXT = {
         "Joining",
         "Bidding",

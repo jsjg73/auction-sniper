@@ -31,7 +31,9 @@ public class ApplicationRunner {
         driver = new AuctionSniperDriver(1000);
         driver.hasTitle(MainWindow.APPLICATION_TITLE);
         driver.hasColumnTitles();
-        driver.showsSniperStatus(SnipersTableModel.textFor(SniperState.JOINING));
+        driver.showsSniperStatus(
+            SnipersTableModel.textFor(SniperState.JOINING)
+        );
     }
 
     public void showSniperHasLostAuction() {
