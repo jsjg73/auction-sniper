@@ -1,9 +1,9 @@
 package org.example.acution_sniper;
 
+import auctionsniper.SniperState;
 import org.example.Main;
 import org.example.MainWindow;
-
-import static org.example.MainWindow.STATUS_JOINING;
+import org.example.SnipersTableModel;
 
 public class ApplicationRunner {
     public static final String XMPP_HOSTNAME = "localhost";
@@ -29,7 +29,7 @@ public class ApplicationRunner {
         thread.setDaemon(true);
         thread.start();
         driver = new AuctionSniperDriver(1000);
-        driver.showsSniperStatus(STATUS_JOINING);
+        driver.showsSniperStatus(SnipersTableModel.textFor(SniperState.JOINING));
     }
 
     public void showSniperHasLostAuction() {

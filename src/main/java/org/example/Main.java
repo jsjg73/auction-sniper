@@ -95,15 +95,6 @@ public class Main {
                 }
             });
         }
-
-        private void showStatus(final String status) {
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    ui.showStatus(status);
-                }
-            });
-        }
     }
 
     private static class XMMPAuction implements Auction {
