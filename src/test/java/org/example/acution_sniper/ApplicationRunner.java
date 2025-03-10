@@ -36,8 +36,8 @@ public class ApplicationRunner {
         );
     }
 
-    public void showSniperHasLostAuction() {
-        driver.showsSniperStatus(STATUS_LOST);
+    public void showSniperHasLostAuction(FakeAuctionServer auction) {
+        driver.showsSniperStatus(SnipersTableModel.textFor(SniperState.LOST));
     }
 
     public void stop() {
