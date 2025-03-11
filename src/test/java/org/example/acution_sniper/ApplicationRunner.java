@@ -13,16 +13,11 @@ public class ApplicationRunner {
     public static final String SNIPER_XMPP_ID = "sniper@jaesung-kim/Auction";
     private AuctionSniperDriver driver;
 
-    public void startBiddingIn(final FakeAuctionServer auction) {
+    public void startBiddingIn(final FakeAuctionServer... auctions) {
         Thread thread = new Thread("Test Application") {
             public void run() {
                 try {
-                    Main.main(
-                        XMPP_HOSTNAME,
-                        SNIPER_ID,
-                        SNIPER_PASSWORD,
-                        auction.getItemId()
-                    );
+                    Main.main(arguments(auctions));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -36,6 +31,10 @@ public class ApplicationRunner {
         driver.showsSniperStatus(
             SnipersTableModel.textFor(SniperState.JOINING)
         );
+    }
+
+    private String[] arguments(FakeAuctionServer... auctions) {
+        return null;
     }
 
     public void showSniperHasLostAuction(FakeAuctionServer auction) {
