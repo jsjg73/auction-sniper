@@ -48,7 +48,7 @@ public class AuctionSniperEndToEndTest {
         application.hasShownSniperIsWinning(auction, 1098);
 
         auction.announceClosed();
-        application.showSniperHasWonAuction(1098);
+        application.showSniperHasWonAuction(auction, 1098);
     }
 
     @AfterEach void stopAuction() {
