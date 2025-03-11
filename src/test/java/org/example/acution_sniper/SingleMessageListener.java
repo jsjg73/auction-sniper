@@ -9,8 +9,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.*;
 
 public class SingleMessageListener implements MessageListener {
     private final ArrayBlockingQueue<Message> messages =
@@ -22,7 +21,6 @@ public class SingleMessageListener implements MessageListener {
 
     public void receivesAMessage(Matcher<? super String> meesageMatcher) throws InterruptedException {
         final Message message = messages.poll(5, TimeUnit.SECONDS);
-        assertThat("Message", message, is(notNullValue()));
-        assertThat(message.getBody(), meesageMatcher);
+        assertThat(message, hasProperty("body", meesageMatcher));
     }
 }
