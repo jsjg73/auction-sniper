@@ -5,6 +5,8 @@ import auctionsniper.SniperSnapshot;
 import auctionsniper.SniperState;
 
 import javax.swing.table.AbstractTableModel;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SnipersTableModel extends AbstractTableModel implements SniperListener {
     private final static SniperSnapshot STARTING_UP = new SniperSnapshot("", 0, 0, SniperState.JOINING);
@@ -15,11 +17,11 @@ public class SnipersTableModel extends AbstractTableModel implements SniperListe
             "Lost",
             "Won"
     };
-    private SniperSnapshot sniperSnapshot = STARTING_UP;
+    private List<SniperSnapshot> sniperSnapshots = new ArrayList<>();
 
     @Override
     public int getRowCount() {
-        return 1;
+        return sniperSnapshots.size();
     }
 
     @Override
@@ -29,7 +31,7 @@ public class SnipersTableModel extends AbstractTableModel implements SniperListe
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        return Column.at(columnIndex).valueIn(sniperSnapshot);
+        return Column.at(columnIndex).valueIn(sniperSnapshots.get(rowIndex));
     }
 
     @Override
@@ -39,7 +41,7 @@ public class SnipersTableModel extends AbstractTableModel implements SniperListe
 
     @Override
     public void sniperStateChanged(SniperSnapshot newSniperSnapshot) {
-        sniperSnapshot = newSniperSnapshot;
+        sniperSnapshots.set(0, newSniperSnapshot);
         fireTableRowsUpdated(0, 0);
     }
 
@@ -47,7 +49,9 @@ public class SnipersTableModel extends AbstractTableModel implements SniperListe
         return STATUS_TEXT[state.ordinal()];
     }
 
-    public void addSniper(SniperSnapshot joining) {
-
+    public void addSniper(SniperSnapshot snapshot) {
+        int row = sniperSnapshots.size();
+        sniperSnapshots.add(snapshot);
+        fireTableRowsInserted(row, row);
     }
 }
