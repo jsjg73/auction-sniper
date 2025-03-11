@@ -8,6 +8,7 @@ import org.jivesoftware.smack.XMPPException;
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,7 +57,8 @@ public class Main {
         return connection;
     }
 
-    private void joinAuction(XMPPConnection connection, String itemId) {
+    private void joinAuction(XMPPConnection connection, String itemId) throws Exception {
+        safelyAddItemToModel(itemId);
         final Chat chat = connection.getChatManager().createChat(
             auctionId(itemId, connection),
             null
@@ -69,6 +71,15 @@ public class Main {
                     new AuctionSniper(auction, new SwingThreadSniperListener(snipers), itemId))
         );
         auction.join();
+    }
+
+    private void safelyAddItemToModel(String itemId) throws Exception {
+        SwingUtilities.invokeAndWait(new Runnable() {
+            @Override
+            public void run() {
+                snipers.addSniper(SniperSnapshot.joining(itemId));
+            }
+        });
     }
 
     private void disconnectWhenUICloses(XMPPConnection connection) {
