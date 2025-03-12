@@ -3,6 +3,7 @@ package org.example;
 import auctionsniper.SniperListener;
 import auctionsniper.SniperSnapshot;
 import auctionsniper.SniperState;
+import auctionsniper.util.Defect;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
@@ -41,8 +42,18 @@ public class SnipersTableModel extends AbstractTableModel implements SniperListe
 
     @Override
     public void sniperStateChanged(SniperSnapshot newSniperSnapshot) {
-        sniperSnapshots.set(0, newSniperSnapshot);
-        fireTableRowsUpdated(0, 0);
+        int row = rowMatching(newSniperSnapshot);
+        sniperSnapshots.set(row, newSniperSnapshot);
+        fireTableRowsUpdated(row, row);
+    }
+
+    private int rowMatching(SniperSnapshot newSniperSnapshot) {
+        for (int i = 0; i < sniperSnapshots.size(); i++) {
+            if (newSniperSnapshot.isForSameItemAs(sniperSnapshots.get(i))) {
+                return i;
+            }
+        }
+        throw new Defect("Cannot find match for " + sniperSnapshots);
     }
 
     public static String textFor(SniperState state) {
