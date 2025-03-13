@@ -1,13 +1,12 @@
 package org.example;
 
-import auctionsniper.SniperSnapshot;
-
 import javax.swing.*;
-
 import java.awt.*;
 
 public class MainWindow extends JFrame {
     public static final String APPLICATION_TITLE = "Auction Sniper";
+    public static final String NEW_ITEM_ID_NAME = "item id";
+    public static final String JOIN_BUTTON_NAME = "join Auction";
     public static String MAIN_WINDOW_NAME = "Auction Sniper Main";
     public static final String STATUS_WON = "Won";
     private static final String SNIPERS_TABLE_NAME = "sniper table";
