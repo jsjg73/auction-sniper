@@ -1,9 +1,15 @@
 package org.example;
 
+import org.jmock.example.announcer.Announcer;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class MainWindow extends JFrame {
+    private final Announcer<UserRequestListener> userRequests =
+            Announcer.to(UserRequestListener.class);
     public static final String APPLICATION_TITLE = "Auction Sniper";
     public static final String NEW_ITEM_ID_NAME = "item id";
     public static final String JOIN_BUTTON_NAME = "join Auction";
@@ -32,6 +38,12 @@ public class MainWindow extends JFrame {
         JButton joinAuctionButton = new JButton("Join Auction");
         joinAuctionButton.setName(JOIN_BUTTON_NAME);
         controls.add(joinAuctionButton);
+        joinAuctionButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                userRequests.announce().joinAuction(itemIdField.getText());
+            }
+        });
 
         return controls;
     }
@@ -50,6 +62,6 @@ public class MainWindow extends JFrame {
     }
 
     public void addUserRequestListener(UserRequestListener userRequestListener) {
-
+        userRequests.addListener(userRequestListener);
     }
 }
