@@ -18,6 +18,8 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.jmock/jmock-junit5
     testImplementation 'org.jmock:jmock-junit5:2.13.1'
+    // https://mvnrepository.com/artifact/org.jmock/jmock-example
+    implementation 'org.jmock:jmock-example:2.13.1'
 
     // https://mvnrepository.com/artifact/org.hamcrest/hamcrest
     testImplementation 'org.hamcrest:hamcrest:2.2'
