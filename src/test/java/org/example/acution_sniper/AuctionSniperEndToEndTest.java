@@ -4,8 +4,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 public class AuctionSniperEndToEndTest {
-    private final FakeAuctionServer auction = new FakeAuctionServer("item-54321");
-    private final FakeAuctionServer auction2 = new FakeAuctionServer("item-65432");
+    private final FakeAuctionServer auction = new FakeAuctionServer("item54321");
+    private final FakeAuctionServer auction2 = new FakeAuctionServer("item65432");
     private final ApplicationRunner application = new ApplicationRunner();
 
     @Test
