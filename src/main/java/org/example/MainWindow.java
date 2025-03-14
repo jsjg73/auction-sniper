@@ -48,4 +48,8 @@ public class MainWindow extends JFrame {
         snipersTable.setName(SNIPERS_TABLE_NAME);
         return snipersTable;
     }
+
+    public void addUserRequestListener(UserRequestListener userRequestListener) {
+
+    }
 }
