@@ -1,14 +1,12 @@
 package org.example;
 
 import auctionsniper.*;
-import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +28,7 @@ public class Main {
     private MainWindow ui;
 
     @SuppressWarnings("unused")
-    private List<Chat> notToBeGCd = new ArrayList<>();
+    private List<Auction> notToBeGCd = new ArrayList<>();
 
     public Main() throws Exception {
         SwingUtilities.invokeAndWait(new Runnable() {
@@ -53,14 +51,12 @@ public class Main {
             @Override
             public void joinAuction(String itemId) {
                 snipers.addSniper(SniperSnapshot.joining(itemId));
-                Chat chat = connection.getChatManager()
-                        .createChat(auctionId(itemId, connection), null);
-                notToBeGCd.add(chat);
 
-                Auction auction = new XMMPAuction(chat);
-                chat.addMessageListener(
-                        new AuctionMessageTranslator(connection.getUser(),
-                                new AuctionSniper(auction, new SwingThreadSniperListener(snipers), itemId))
+                Auction auction = new XMPPAuction(connection, itemId);
+                notToBeGCd.add(auction);
+
+                auction.addAuctionEventListener(
+                    new AuctionSniper(auction, new SwingThreadSniperListener(snipers), itemId)
                 );
                 auction.join();
             }
@@ -83,10 +79,6 @@ public class Main {
         });
     }
 
-    private static String auctionId(String itemId, XMPPConnection connection) {
-        return String.format(AUCTION_ID_FORMAT, itemId, connection.getServiceName());
-    }
-
     public class SwingThreadSniperListener implements SniperListener {
         private final SniperListener sniperListener;
 
@@ -105,29 +97,4 @@ public class Main {
         }
     }
 
-    private static class XMMPAuction implements Auction {
-        private final Chat chat;
-
-        public XMMPAuction(Chat chat) {
-            this.chat = chat;
-        }
-
-        @Override
-        public void bid(int amount) {
-            sendMessage(String.format(BID_COMMAND_FORMAT, amount));
-        }
-
-        @Override
-        public void join() {
-            sendMessage(JOIN_COMMAND_FORMAT);
-        }
-
-        private void sendMessage(final String message) {
-            try {
-                chat.sendMessage(message);
-            } catch (XMPPException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 }
