@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import static auctionsniper.xmpp.XMPPAuctionHouse.AUCTION_RESOURCE;
 import static org.example.acution_sniper.ApplicationRunner.SNIPER_XMPP_ID;
 
 class XMPPAuctionTest {
@@ -26,7 +27,7 @@ class XMPPAuctionTest {
     public void createConnection() throws Exception {
         connection = new XMPPConnection(FakeAuctionServer.XMPP_HOSTNAME);
         connection.connect();
-        connection.login(ApplicationRunner.SNIPER_ID, ApplicationRunner.SNIPER_PASSWORD, Main.AUCTION_RESOURCE);
+        connection.login(ApplicationRunner.SNIPER_ID, ApplicationRunner.SNIPER_PASSWORD, AUCTION_RESOURCE);
 
         auctionServer.startSellingItem();
     }

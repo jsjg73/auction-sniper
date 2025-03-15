@@ -9,7 +9,7 @@ import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
 import org.jmock.example.announcer.Announcer;
 
-import static org.example.Main.AUCTION_ID_FORMAT;
+import static auctionsniper.xmpp.XMPPAuctionHouse.AUCTION_ID_FORMAT;
 
 public class XMPPAuction implements Auction {
     private final Announcer<AuctionEventListener> auctionEventListeners =
