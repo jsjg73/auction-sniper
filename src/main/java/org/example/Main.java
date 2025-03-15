@@ -1,6 +1,7 @@
 package org.example;
 
 import auctionsniper.*;
+import auctionsniper.xmpp.XMPPAuction;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
 
