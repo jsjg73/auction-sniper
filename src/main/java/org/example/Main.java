@@ -10,9 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
-    public static final String BID_COMMAND_FORMAT = "SOLVersion: 1.1; Command: BID; Price: %d;";
-    public static String SNIPER_STATUS_NAME = "sniper status";
-    public static final String JOIN_COMMAND_FORMAT = "SOLVersion: 1.1; Command: JOIN;";
 
     private static final int ARG_HOSTNAME = 0;
     private static final int ARG_USERNAME = 1;
