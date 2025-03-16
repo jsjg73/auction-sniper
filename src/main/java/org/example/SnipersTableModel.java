@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SnipersTableModel extends AbstractTableModel implements SniperListener, SniperCollector {
-    private final static SniperSnapshot STARTING_UP = new SniperSnapshot("", 0, 0, SniperState.JOINING);
+    private final ArrayList<AuctionSniper> notToBeGCd = new ArrayList<AuctionSniper>();
     private final static String[] STATUS_TEXT = {
         "Joining",
         "Bidding",
@@ -62,14 +62,16 @@ public class SnipersTableModel extends AbstractTableModel implements SniperListe
         return STATUS_TEXT[state.ordinal()];
     }
 
-    public void addSniper(SniperSnapshot snapshot) {
-        int row = sniperSnapshots.size();
+    private void addSniperSnapshot(SniperSnapshot snapshot) {
         sniperSnapshots.add(snapshot);
+        int row = sniperSnapshots.size() - 1;
         fireTableRowsInserted(row, row);
     }
 
     @Override
     public void addSniper(AuctionSniper sniper) {
-
+        notToBeGCd.add(sniper);
+        addSniperSnapshot(sniper.getSnapshot());
+        sniper.addSniperListener(new SwingThreadSniperListener(this));
     }
 }
