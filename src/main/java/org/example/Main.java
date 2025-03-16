@@ -1,13 +1,12 @@
 package org.example;
 
 import auctionsniper.*;
+import auctionsniper.launcher.SniperLauncher;
 import auctionsniper.xmpp.XMPPAuctionHouse;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Main {
 
@@ -18,9 +17,6 @@ public class Main {
 
     private final SnipersTableModel snipers = new SnipersTableModel();
     private MainWindow ui;
-
-    @SuppressWarnings("unused")
-    private List<Auction> notToBeGCd = new ArrayList<>();
 
     public Main() throws Exception {
         SwingUtilities.invokeAndWait(new Runnable() {
@@ -39,20 +35,7 @@ public class Main {
     }
 
     private void addUserRequestListenerFor(final AuctionHouse auctionHouse) {
-        ui.addUserRequestListener(new UserRequestListener() {
-            @Override
-            public void joinAuction(String itemId) {
-                snipers.addSniper(SniperSnapshot.joining(itemId));
-
-                Auction auction = auctionHouse.auctionFor(itemId);
-                notToBeGCd.add(auction);
-
-                auction.addAuctionEventListener(
-                    new AuctionSniper(auction, new SwingThreadSniperListener(snipers), itemId)
-                );
-                auction.join();
-            }
-        });
+        ui.addUserRequestListener(new SniperLauncher(snipers, auctionHouse));
     }
 
     private void disconnectWhenUICloses(final XMPPAuctionHouse auctionHouse) {
@@ -62,24 +45,6 @@ public class Main {
                 auctionHouse.disconnect();
             }
         });
-    }
-
-    public class SwingThreadSniperListener implements SniperListener {
-        private final SniperListener sniperListener;
-
-        public SwingThreadSniperListener (SniperListener sniperListener) {
-            this.sniperListener = sniperListener;
-        }
-
-        @Override
-        public void sniperStateChanged(final SniperSnapshot snapshot) {
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    sniperListener.sniperStateChanged(snapshot);
-                }
-            });
-        }
     }
 
 }
