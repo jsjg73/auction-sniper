@@ -1,15 +1,17 @@
 package org.example;
 
+import auctionsniper.AuctionSniper;
 import auctionsniper.SniperListener;
 import auctionsniper.SniperSnapshot;
 import auctionsniper.SniperState;
+import auctionsniper.launcher.SniperCollector;
 import auctionsniper.util.Defect;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SnipersTableModel extends AbstractTableModel implements SniperListener {
+public class SnipersTableModel extends AbstractTableModel implements SniperListener, SniperCollector {
     private final static SniperSnapshot STARTING_UP = new SniperSnapshot("", 0, 0, SniperState.JOINING);
     private final static String[] STATUS_TEXT = {
         "Joining",
@@ -64,5 +66,10 @@ public class SnipersTableModel extends AbstractTableModel implements SniperListe
         int row = sniperSnapshots.size();
         sniperSnapshots.add(snapshot);
         fireTableRowsInserted(row, row);
+    }
+
+    @Override
+    public void addSniper(AuctionSniper sniper) {
+
     }
 }
