@@ -5,6 +5,7 @@ import auctionsniper.AuctionHouse;
 import auctionsniper.AuctionSniper;
 import auctionsniper.launcher.SniperCollector;
 import auctionsniper.launcher.SniperLauncher;
+import org.example.Item;
 import org.hamcrest.FeatureMatcher;
 import org.hamcrest.Matcher;
 import org.jmock.Expectations;
@@ -40,7 +41,7 @@ public class SniperLauncherTest {
             one(auction).join(); then(auctionState.is("joined"));
         }});
 
-        sut.joinAuction(itemId);
+        sut.joinAuction(new Item(itemId, Integer.MAX_VALUE));
     }
 
     private Matcher<AuctionSniper> sniperForItem(String itemId) {

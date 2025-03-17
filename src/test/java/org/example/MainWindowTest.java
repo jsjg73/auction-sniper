@@ -14,18 +14,18 @@ public class MainWindowTest {
 
     @Test
     void makesUserRequestWhenJoinButtonClicked() {
-        final ValueMatcherProbe<String> buttonProbe =
-                new ValueMatcherProbe<>(equalTo("an item id"), "join request");
+        final ValueMatcherProbe<Item> itemProbe =
+                new ValueMatcherProbe<>(equalTo(new Item("an item id", 789)), "item request");
 
         sut.addUserRequestListener(
             new UserRequestListener() {
-                public void joinAuction(String itemId) {
-                    buttonProbe.setReceivedValue(itemId);
+                public void joinAuction(Item item) {
+                    itemProbe.setReceivedValue(item);
                 }
             }
         );
 
-        driver.startBiddingFor("an item id");
-        driver.check(buttonProbe);
+        driver.startBiddingFor("an item id", 789);
+        driver.check(itemProbe);
     }
 }
