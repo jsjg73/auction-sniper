@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MainWindow extends JFrame {
+    public static final String NEW_ITEM_STOP_PRICE_NAME = "stop price";
     private final Announcer<UserRequestListener> userRequests =
             Announcer.to(UserRequestListener.class);
     public static final String APPLICATION_TITLE = "Auction Sniper";
