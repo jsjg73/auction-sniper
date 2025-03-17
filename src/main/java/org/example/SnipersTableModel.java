@@ -1,9 +1,7 @@
 package org.example;
 
-import auctionsniper.AuctionSniper;
-import auctionsniper.SniperListener;
-import auctionsniper.SniperSnapshot;
-import auctionsniper.SniperState;
+import auctionsniper.*;
+import auctionsniper.SniperPortfolio.PortfolioListener;
 import auctionsniper.launcher.SniperCollector;
 import auctionsniper.util.Defect;
 
@@ -11,7 +9,7 @@ import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SnipersTableModel extends AbstractTableModel implements SniperListener, SniperCollector {
+public class SnipersTableModel extends AbstractTableModel implements SniperListener, PortfolioListener {
     private final ArrayList<AuctionSniper> notToBeGCd = new ArrayList<AuctionSniper>();
     private final static String[] STATUS_TEXT = {
         "Joining",
@@ -69,9 +67,8 @@ public class SnipersTableModel extends AbstractTableModel implements SniperListe
     }
 
     @Override
-    public void addSniper(AuctionSniper sniper) {
-        notToBeGCd.add(sniper);
-        addSniperSnapshot(sniper.getSnapshot());
+    public void sniperAdded(AuctionSniper sniper) {
         sniper.addSniperListener(new SwingThreadSniperListener(this));
+        addSniperSnapshot(sniper.getSnapshot());
     }
 }

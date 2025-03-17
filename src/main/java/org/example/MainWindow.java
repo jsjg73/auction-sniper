@@ -1,5 +1,6 @@
 package org.example;
 
+import auctionsniper.SniperPortfolio;
 import org.jmock.example.announcer.Announcer;
 
 import javax.swing.*;
@@ -16,13 +17,11 @@ public class MainWindow extends JFrame {
     public static String MAIN_WINDOW_NAME = "Auction Sniper Main";
     public static final String STATUS_WON = "Won";
     private static final String SNIPERS_TABLE_NAME = "sniper table";
-    private final SnipersTableModel snipers;
 
-    public MainWindow(SnipersTableModel snipers) {
+    public MainWindow(SniperPortfolio portfolio) {
         super("Auction Sniper");
-        this.snipers = snipers;
         setName(MAIN_WINDOW_NAME);
-        fillContentPane(makeSnipersTable(), makeControls());
+        fillContentPane(makeSnipersTable(portfolio), makeControls());
         pack();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
@@ -55,8 +54,10 @@ public class MainWindow extends JFrame {
         contentPane.add(new JScrollPane(snipersTable), BorderLayout.CENTER);
     }
 
-    private JTable makeSnipersTable() {
-        final JTable snipersTable = new JTable(snipers);
+    private JTable makeSnipersTable(SniperPortfolio portfolio) {
+        SnipersTableModel model = new SnipersTableModel();
+        portfolio.addPortfolioListener(model);
+        final JTable snipersTable = new JTable(model);
         snipersTable.setName(SNIPERS_TABLE_NAME);
         return snipersTable;
     }

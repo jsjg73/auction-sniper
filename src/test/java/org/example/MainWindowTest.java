@@ -1,5 +1,6 @@
 package org.example;
 
+import auctionsniper.SniperPortfolio;
 import com.objogate.wl.swing.probe.ValueMatcherProbe;
 import org.example.acution_sniper.AuctionSniperDriver;
 import org.junit.jupiter.api.Test;
@@ -7,8 +8,8 @@ import org.junit.jupiter.api.Test;
 import static org.hamcrest.Matchers.equalTo;
 
 public class MainWindowTest {
-    private final SnipersTableModel tableModel = new SnipersTableModel();
-    private final MainWindow sut = new MainWindow(tableModel);
+    private final SniperPortfolio portfolio = new SniperPortfolio();
+    private final MainWindow sut = new MainWindow(portfolio);
     private final AuctionSniperDriver driver = new AuctionSniperDriver(100);
 
     @Test
