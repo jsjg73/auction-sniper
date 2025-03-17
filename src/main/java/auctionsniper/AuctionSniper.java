@@ -1,5 +1,6 @@
 package auctionsniper;
 
+import org.example.Item;
 import org.jmock.example.announcer.Announcer;
 
 public class AuctionSniper implements AuctionEventListener {
@@ -7,10 +8,10 @@ public class AuctionSniper implements AuctionEventListener {
     private final Auction auction;
     private SniperSnapshot snapshot;
 
-    public AuctionSniper(String itemId, Auction auction) {
+    public AuctionSniper(Item item, Auction auction) {
         this.auction =auction;
         this.sniperListener = Announcer.to(SniperListener.class);
-        this.snapshot = SniperSnapshot.joining(itemId);
+        this.snapshot = SniperSnapshot.joining(item.identifier);
     }
 
 

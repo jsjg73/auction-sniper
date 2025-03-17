@@ -1,6 +1,7 @@
 package test.auctionsniper;
 
 import auctionsniper.*;
+import org.example.Item;
 import org.hamcrest.FeatureMatcher;
 import org.hamcrest.Matcher;
 import org.jmock.Expectations;
@@ -19,12 +20,14 @@ import static org.hamcrest.Matchers.equalTo;
 @ExtendWith(JMockFieldExtension.class)
 public class AuctionSniperTest {
     private static final String ITEM_ID = "item-id";
+    private static final Item ITEM = new Item(ITEM_ID, 1234);
+
     private final Mockery context = new Mockery();
     private final Auction auction = context.mock(Auction.class);
     private final SniperListener sniperListener =
             context.mock(SniperListener.class);
 
-    private final AuctionSniper sniper = new AuctionSniper(ITEM_ID, auction);
+    private final AuctionSniper sniper = new AuctionSniper(ITEM, auction);
 
     @BeforeEach
     void addAuctionSniperListener() {
@@ -109,5 +112,26 @@ public class AuctionSniperTest {
                 return actual.state;
             }
         };
+    }
+
+    @Test
+    void doesNotBidAndReportsLosingIfSubsequentPriceIsAboveStopPrice() {
+        allowingSniperBidding();
+        context.checking(new Expectations() {{
+            int bid = 123 + 45;
+            allowing(auction).bid(bid);
+            atLeast(1).of(sniperListener).sniperStateChanged(
+                    new SniperSnapshot(ITEM_ID, 2345, bid, LOSING));
+            when(sniperState.is("bidding"));
+        }});
+        sniper.currentPrice(123, 45, FromOtherBidder);
+        sniper.currentPrice(2345, 25, FromOtherBidder);
+    }
+
+    private void allowingSniperBidding() {
+        context.checking(new Expectations() {{
+            allowing(sniperListener).sniperStateChanged(with(aSniperThatIs(BIDDING)));
+            then(sniperState.is("bidding"));
+        }});
     }
 }

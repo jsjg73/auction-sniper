@@ -29,23 +29,24 @@ public class SniperLauncherTest {
 
     @Test
     void addsNessSniperToCollectorAndThenJoinsAuction() {
-        final String itemId = "item 123";
+
+        final Item item = new Item("item 123", 456);
 
         context.checking(new Expectations() {{
-            allowing(auctionHouse).auctionFor(itemId);
+            allowing(auctionHouse).auctionFor(with(any(Item.class)));
             will(returnValue(auction));
 
-            oneOf(auction).addAuctionEventListener(with(sniperForItem(itemId))); when(auctionState.is("not joined"));
-            oneOf(sniperCollector).addSniper(with(sniperForItem(itemId))); when(auctionState.is("not joined"));
+            oneOf(auction).addAuctionEventListener(with(sniperForItem(item))); when(auctionState.is("not joined"));
+            oneOf(sniperCollector).addSniper(with(sniperForItem(item))); when(auctionState.is("not joined"));
 
             one(auction).join(); then(auctionState.is("joined"));
         }});
 
-        sut.joinAuction(new Item(itemId, Integer.MAX_VALUE));
+        sut.joinAuction(item);
     }
 
-    private Matcher<AuctionSniper> sniperForItem(String itemId) {
-        return new FeatureMatcher<AuctionSniper, String>(equalTo(itemId), "sniper with itemId id", "itemId") {
+    private Matcher<AuctionSniper> sniperForItem(Item item) {
+        return new FeatureMatcher<AuctionSniper, String>(equalTo(item.identifier), "sniper with item id", "item") {
             @Override
             protected String featureValueOf(AuctionSniper actual) {
                 return actual.getSnapshot().itemId;

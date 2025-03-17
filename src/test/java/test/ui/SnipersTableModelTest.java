@@ -5,6 +5,7 @@ import auctionsniper.SniperSnapshot;
 import auctionsniper.SniperState;
 import auctionsniper.util.Defect;
 import org.example.Column;
+import org.example.Item;
 import org.example.SnipersTableModel;
 import org.hamcrest.Matcher;
 import org.jmock.Expectations;
@@ -27,7 +28,7 @@ public class SnipersTableModelTest {
     private final Mockery context = new Mockery();
     private TableModelListener listener = context.mock(TableModelListener.class);
     private final SnipersTableModel model = new SnipersTableModel();
-    private final AuctionSniper sniper = new AuctionSniper("item 0", null);
+    private final AuctionSniper sniper = new AuctionSniper(new Item("item 0", 234), null);
 
     @BeforeEach
     void attachModelListener() {
@@ -110,7 +111,7 @@ public class SnipersTableModelTest {
 
     @Test
     void holdsSnipersInAdditionOrder() {
-        AuctionSniper sniper2 = new AuctionSniper("item 1", null);
+        AuctionSniper sniper2 = new AuctionSniper(new Item("item 1", 345), null);
         context.checking(new Expectations() {{
             ignoring(listener);
         }});
@@ -128,7 +129,7 @@ public class SnipersTableModelTest {
 
     @Test
     void updatesCorrectRowForSniper() {
-        AuctionSniper sniper2 = new AuctionSniper("item 1", null);
+        AuctionSniper sniper2 = new AuctionSniper(new Item("item 1", 345), null);
 
         context.checking(new Expectations() {{
             allowing(listener).tableChanged(with(anyInsertionEvent()));
