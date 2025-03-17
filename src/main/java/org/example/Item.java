@@ -27,4 +27,8 @@ public class Item {
     public int hashCode() {
         return HashCodeBuilder.reflectionHashCode(this);
     }
+
+    public boolean allowsBid(int bid) {
+        return bid <= stopPrice;
+    }
 }
