@@ -120,6 +120,9 @@ public class AuctionSniperEndToEndTest {
 
         auction.reportPrice(520, 21, "other bidder");
         waitForAnotherAuctionEvent();
+
+        application.reportsInvalidMessage(auction, brokenMessage);
+        application.showsSniperHasFailed(auction);
     }
 
     private void waitForAnotherAuctionEvent() throws InterruptedException, XMPPException {

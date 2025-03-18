@@ -5,7 +5,10 @@ import org.example.Main;
 import org.example.MainWindow;
 import org.example.SnipersTableModel;
 
+import java.io.IOException;
+
 import static org.example.SnipersTableModel.textFor;
+import static org.hamcrest.Matchers.containsString;
 
 public class ApplicationRunner {
     public static final String XMPP_HOSTNAME = "localhost";
@@ -14,6 +17,7 @@ public class ApplicationRunner {
     public static final String SNIPER_PASSWORD = "sniper";
     public static final String SNIPER_XMPP_ID = "sniper@jaesung-kim/Auction";
     private AuctionSniperDriver driver;
+    private AuctionLogDriver logDriver = new AuctionLogDriver();
 
     public void startBiddingIn(final FakeAuctionServer... auctions) {
         startSniper();
@@ -36,6 +40,7 @@ public class ApplicationRunner {
     }
 
     private void startSniper() {
+        logDriver.clearLog();
         Thread thread = new Thread("Test Application") {
             public void run() {
                 try {
@@ -80,5 +85,10 @@ public class ApplicationRunner {
 
     public void showsSniperHasFailed(FakeAuctionServer auction) {
         driver.showsSniperStatus(auction.getItemId(), 0, 0, textFor(SniperState.FAILED));
+    }
+
+
+    public void reportsInvalidMessage(FakeAuctionServer auction, String brokenMessage) throws IOException {
+        logDriver.hasEntry(containsString(brokenMessage));
     }
 }

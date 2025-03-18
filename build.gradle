@@ -24,6 +24,7 @@ dependencies {
     // https://mvnrepository.com/artifact/org.hamcrest/hamcrest
     testImplementation 'org.hamcrest:hamcrest:2.2'
 
+    implementation('commons-io:commons-io:1.4')
 
     implementation 'jivesoftware:smack:3.1.0'
 
