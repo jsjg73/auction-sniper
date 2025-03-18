@@ -44,14 +44,6 @@ public class AuctionMessageTranslator implements MessageListener {
         }
     }
 
-    private HashMap<String, String> unpackEventFrom(Message message) {
-        HashMap<String, String> event = new HashMap<>();
-        Arrays.stream(message.getBody().split(";"))
-                .map(element -> element.split(":"))
-                .forEach(pair -> event.put(pair[0].trim(), pair[1].trim()));
-        return event;
-    }
-
     private static class AuctionEvent {
         private final Map<String, String> fields = new HashMap<>();
 
@@ -89,7 +81,11 @@ public class AuctionMessageTranslator implements MessageListener {
         }
 
         private String get(String fieldName) {
-            return fields.get(fieldName);
+            String value = fields.get(fieldName);
+            if (null == value) {
+                throw new MissingValueException(fieldName);
+            }
+            return value;
         }
 
         private String bidder() {
