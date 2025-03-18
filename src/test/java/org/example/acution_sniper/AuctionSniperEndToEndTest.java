@@ -1,5 +1,6 @@
 package org.example.acution_sniper;
 
+import org.jivesoftware.smack.XMPPException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -99,6 +100,32 @@ public class AuctionSniperEndToEndTest {
         auction.announceClosed();
         application.showSniperHasLostAuction(auction);
 
+    }
+
+    @Test
+    void sniperReportsInvalidAuctionMessageAndStopRespondingToEvents() throws Exception {
+        String brokenMessage = "a broken message";
+
+        auction.startSellingItem();
+        auction2.startSellingItem();
+
+        application.startBiddingIn(auction, auction2);
+        auction.hasReceivedJoinRequestFrom(ApplicationRunner.SNIPER_XMPP_ID);
+
+        auction.reportPrice(500, 20, "other bidder");
+        auction.hasReceivedBid(520, ApplicationRunner.SNIPER_XMPP_ID);
+
+        auction.sendInvalidMessageContaining(brokenMessage);
+        application.showsSniperHasFailed(auction);
+
+        auction.reportPrice(520, 21, "other bidder");
+        waitForAnotherAuctionEvent();
+    }
+
+    private void waitForAnotherAuctionEvent() throws InterruptedException, XMPPException {
+        auction2.hasReceivedJoinRequestFrom(ApplicationRunner.SNIPER_XMPP_ID);
+        auction2.reportPrice(600, 6, "other bidder");
+        application.hasShownSniperIsBidding(auction2, 600, 606);
     }
 
     @AfterEach void stopAuction() {
